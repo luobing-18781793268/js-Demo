@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			* {margin:0; padding:0;}
+			.div {position:relative; border:1px solid black; width:680px; height:132px; margin:10px auto; overflow:hidden;}
+			.div ul {position:absolute; left:0; cursor: pointer;}
+			.div ul li {list-style:none; float:left; width:150px; height:112px; padding:10px;}
+			.div ul li img {width:150px; height: 112px;}
+		</style>
+		<script>
+//			window.onload=function(){
+//				var oDiv=document.getElementById("div1");
+//				var oL=document.getElementsByTagName("a")[0];
+//				var oR=document.getElementsByTagName("a")[1];
+//				var oUl=oDiv.getElementsByTagName("ul")[0];
+//				var aLi=document.getElementsByTagName("li");
+//				
+//				oUl.innerHTML+=oUl.innerHTML;
+//				oUl.style.width=aLi[0].offsetWidth*aLi.length+"px";
+//				var iSpeed=2;
+//				autoPlay();
+//				
+//				function autoPlay(){
+//					clearInterval(oUl.timer);
+//					oUl.timer=setInterval(function(){
+//						if(oUl.offsetLeft>0){
+//							oUl.style.left=-oUl.offsetWidth/2+"px";
+//						}
+//						if(oUl.offsetLeft<-oUl.offsetWidth/2){
+//							oUl.style.left=0;
+//						}
+//						oUl.style.left=parseInt(getStyle(oUl,"left"))+iSpeed+"px";
+//					},30)					
+//				}
+//				oDiv.onmouseover=function(){
+//					clearInterval(oUl.timer);
+//				}
+//				oDiv.onmouseout=function(){
+//					autoPlay();
+//				}
+//				oL.onclick=function(){
+//					iSpeed=-Math.abs(iSpeed);
+//				}
+//				oR.onclick=function(){
+//					iSpeed=Math.abs(iSpeed);
+//				}
+//				
+//			}
+//			
+//			function getStyle(obj, name) {
+//				if(window.getComputedStyle) {
+//					return getComputedStyle(obj, null)[name];
+//				} else {
+//					return obj.currentStyle[name];
+//				}
+//			}
+         window.onload=function(){
+         	var oDiv=document.getElementById("div1");
+         	var oL=document.getElementsByTagName("a")[0];
+         	var oR=document.getElementsByTagName("a")[1];
+         	var oUl=oDiv.getElementsByTagName("ul")[0];
+         	var aLi=document.getElementsByTagName("li");
+         	
+         	oUl.innerHTML+=oUl.innerHTML;
+         	oUl.style.width=aLi[0].offsetWidth*aLi.length+"px";
+         	var iSpeed=-2;
+         	autoPlay();
+         	
+         	function autoPlay(){
+				clearInterval(oUl.timer);
+				oUl.timer=setInterval(function(){
+					if(oUl.offsetLeft>0){
+						oUl.style.left=-oUl.offsetWidth/2+"px";
+					}
+					if(oUl.offsetLeft<-oUl.offsetWidth/2){
+						oUl.style.left=0;
+					}
+					oUl.style.left=parseInt(getStyle(oUl,"left"))+iSpeed+"px";
+				},30)					
+			}
+         	
+         	oDiv.onmouseover=function(){
+         		clearInterval(oUl.timer);
+         	}
+         	oDiv.onmouseout=function(){
+         		autoPlay();
+         	}
+         	oL.onclick=function(){
+         		iSpeed=-Math.abs(iSpeed);
+         	}
+         	oR.onclick=function(){
+         		iSpeed=Math.abs(iSpeed);
+         	}         	
+         }
+         
+         function getStyle(obj,name){
+         	if(window.getComputedStyle){
+         		return getComputedStyle(obj,null)[name];
+         	}else{
+         		return obj.currentStyle[name];
+         	}
+         }
+
+		</script>
+	</head>
+	<body>
+		<a href="##">←</a>
+		<a href="##">→</a>
+		<div id="div1" class="div">
+			<ul>
+		    	<li><img src="img/1.jpg" /></li>
+		    	<li><img src="img/2.jpg" /></li>
+		    	<li><img src="img/3.jpg" /></li>
+		    	<li><img src="img/4.jpg" /></li>
+		    </ul>
+		</div>
+	</body>
+</html>

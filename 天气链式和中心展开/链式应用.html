@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style>
+			#div{
+				height:100px;
+				width:100px;
+				position:absolute;
+				left:100px;
+				top:100px;
+				background: red;
+				margin:50px;
+				border:1px solid black;
+				filter:alpha(opacity:30);
+				opacity: 0.3;
+			}
+			#div1{
+				height:98px;
+				width:98px;
+				position: absolute;
+				margin:1px;
+				background: blue;
+			}
+		</style>
+		<script>
+			window.onload=function(){
+				var oDiv=document.getElementById("div");
+				oDiv.onmouseover=function(){
+					startMove(this,"opacity",100,function(){
+						startMove(oDiv,"padding",30)
+					});
+				}
+				oDiv.onmouseout=function(){
+					startMove(this,"opacity",30,function(){
+						startMove(oDiv,"padding",0)
+					});
+				}
+//				setInterval(function(){
+//					oDiv.style.width=parseInt(getStyle(oDiv,"width"))-1+"px";
+//				},30)
+			}
+			//样式的封装
+			function getStyle(obj,name){
+				if(window.getComputedStyle){
+					return getComputedStyle(obj,null)[name];
+				}else{
+					return obj.currentStyle[name];
+				}
+			}
+			//运动函数的封装
+			function startMove(obj,attr,iTarget,fn){
+				clearInterval(obj.timer);
+				obj.timer=setInterval(function(){
+					if(attr=="opacity"){
+						var iCur=parseInt((getStyle(obj,attr))*100);
+					}else{
+					    var iCur = parseInt(getStyle(obj, attr));
+					}
+					var iSpeed = (iTarget-iCur)/8;
+					iSpeed = iSpeed>0? Math.ceil(iSpeed) : Math.floor(iSpeed);
+					if(iCur==iTarget) {
+						clearInterval(obj.timer);
+						if(fn){
+							fn();
+						}
+					} else {
+						if(attr=="opacity"){
+							obj.style.filter="alpha(opacity:"+(iCur+iSpeed)+")";
+							obj.style.opacity=(iCur+iSpeed)/100;
+						}else{
+							obj.style[attr] = iCur + iSpeed + "px";
+						}						
+					}
+				},30)
+			}
+		</script>
+	</head>
+	<body>
+		<div id="div">
+			<!--<div id="div1"></div>-->
+		</div>
+	</body>
+</html>

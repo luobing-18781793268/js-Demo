@@ -1,0 +1,109 @@
+<!DOCT YPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<style>
+		*{
+				margin: 0;
+				padding: 0;
+			}
+			#box{
+				width: 300px;
+				position: relative;
+				margin: 20px auto;
+			}
+			#box input{
+				width: 300px;
+				height: 40px;
+				padding: 5px;
+				position: absolute;
+				left: 0;
+				top: 0;
+				font-size: 16px;
+			}
+			#box div{
+				width: 312px;
+				position: absolute;
+				left: 0;
+				top: 54px;
+				border: 1px solid #aaa;
+				border-top: 0;
+				border-bottom: 0;
+			}
+			#box div ul li{
+				list-style: none;
+				padding: 8px;
+				color: gray;
+				border-bottom: 1px solid gray;
+				cursor: pointer;
+			}
+
+	</style>
+	<script type="text/javascript">
+//		window.onload = function() {
+//			var oBtn = $("btn");
+//			oBtn.onclick = function() {
+//				var oScript = document.createElement("script");
+//				//oScript.src = "js/test.js";
+//				oScript.src="https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=美女&json=1&p=3&cb=test1&t"
+//				document.body.appendChild(oScript);
+//			}
+//		}
+		
+		window.onload=function(){
+			var box=$("box");
+			var searchInput=$("searchInput");
+			var tip=$("tip");
+			var tipList=$("tipList");
+			
+			searchInput.onkeyup=function(){
+			var oScript=document.createElement("script");
+		    var value=searchInput.value;	
+			oScript.src="https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd="+value+"&json=1&p=3&cb=test1&t";
+			document.body.appendChild(oScript);				
+			}						
+		}
+		
+        function test1(data) {
+        	var tipList=$("tipList");
+        	var arr=data.s;
+			//console.log(data);
+			tipList.innerHTML="";
+			for(var i in arr){
+			var oLi=document.createElement("li");
+			oLi.innerHTML=arr[i];
+			tipList.appendChild(oLi);
+			}
+			
+		}
+		function $(id) {
+			return document.getElementById(id);
+		}      
+	</script>
+	<body>
+		<!--<button id="btn">这是一个跨域请求，点击获取天气信息</button>-->
+		<div id="box">
+			<input type="text" id="searchInput" placeholder="请输入搜索内容：">
+			<div id="tip">
+				<ul id="tipList">
+					<!-- <li>aaa</li>
+					<li>aaa</li>
+					<li>aaa</li>
+					<li>aaa</li>
+					<li>aaa</li>
+					<li>aaa</li>
+					<li>aaa</li>
+					<li>aaa</li>
+					<li>aaa</li>
+					<li>aaa</li> -->
+				</ul>
+			</div>
+		</div>
+
+	</body>
+
+</html>
+

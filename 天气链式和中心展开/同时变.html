@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title></title>
+		<script type="text/javascript" src="js/move.js" ></script>
+		<style>
+			#div{
+				width: 100px;
+				height: 100px;
+				filter: alpha(opacity: 30);
+				opacity: 0.3;
+				font-size: 12px;
+				border: 1px solid black;
+				background: red;
+			}
+		</style>
+		<script>
+			window.onload = function() {
+				var oBtn = document.getElementById("btn");
+				var oDiv = document.getElementById("div");
+				oBtn.onclick = function() {
+					// startMove(oDiv, "width", 300, function() {
+					// 	startMove(oDiv, "height", 300, function() {
+					// 		startMove(oDiv, "fontSize", 30, function() {
+					// 			startMove(oDiv, "opacity", 100, function() {
+					// 				startMove(oDiv, "borderWidth", 5);
+					// 			})
+					// 		})
+					// 	})
+					// })
+					startMove(oDiv, {width: 300, height: 300, fontSize: 30, opacity: 100, borderWidth: 5})
+				}
+			}
+			//多物体，任意值运动
+//			function startMove(obj, json, fn) {
+//				clearInterval(obj.timer);
+//				obj.timer = setInterval(function() {
+//					var bStop = true;//默认到齐了
+//					for(var attr in json) {
+//						var iCur = 0;
+//						if(attr=="opacity") {
+//							iCur = parseInt(parseFloat(getStyle(obj, attr))*100);
+//						} else {
+//							iCur = parseInt(getStyle(obj, attr));
+//						}
+//
+//						var iSpeed = (json[attr]-iCur)/8;
+//						iSpeed = iSpeed>0? Math.ceil(iSpeed) : Math.floor(iSpeed);
+//						if(iCur!=json[attr]) {
+//							bStop = false;
+//						}
+//						if(attr=="opacity") {
+//							obj.style.filter = "alpha(opacity:"+(iCur+iSpeed)+")"
+//							obj.style.opacity = (iCur + iSpeed)/100;
+//						} else {
+//							obj.style[attr] = iCur + iSpeed + "px";
+//						}
+//					}
+//					if(bStop) {//bStop都到齐了吗
+//						clearInterval(obj.timer);
+//						if(fn) {
+//							fn();
+//						}
+//					}
+//				}, 30)
+//			}
+
+
+			// function startMove(obj, attr, iTarget, fn) {
+			// 	clearInterval(obj.timer);
+			// 	obj.timer = setInterval(function() {
+			// 		var iCur = 0;
+			// 		if(attr=="opacity") {
+			// 			iCur = parseInt(parseFloat(getStyle(obj, attr))*100);
+			// 		} else {
+			// 			iCur = parseInt(getStyle(obj, attr));
+			// 		}
+
+			// 		var iSpeed = (iTarget-iCur)/8;
+			// 		iSpeed = iSpeed>0? Math.ceil(iSpeed) : Math.floor(iSpeed);
+			// 		if(iCur==iTarget) {
+			// 			clearInterval(obj.timer);
+			// 			if(fn) {
+			// 				fn();
+			// 			}
+			// 		} else {
+			// 			if(attr=="opacity") {
+			// 				obj.style.filter = "alpha(opacity:"+(iCur+iSpeed)+")"
+			// 				obj.style.opacity = (iCur + iSpeed)/100;
+			// 			} else {
+			// 				obj.style[attr] = iCur + iSpeed + "px";
+			// 			}
+			// 		}
+			// 	}, 30)
+			// }
+
+			function getStyle(obj, name) {
+				if(window.getComputedStyle) {
+					return getComputedStyle(obj, null)[name];
+				} else {
+					return obj.currentStyle[name]
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<input type="button" id="btn" value="开始运动">
+		<div id="div">运动盒子</div>
+	</body>
+
+</html>
+

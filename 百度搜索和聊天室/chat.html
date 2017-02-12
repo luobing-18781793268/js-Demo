@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script type="text/javascript" src="js/ajax1.js" ></script>
+		<style>
+
+		html,body,div,span,h1,h2,h3,h4,h5,h6,p,pre,a,code,em,img,small,strong,sub,sup,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label{margin:auto;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}
+		h2{ text-align:center; padding:10px; font-size:20px;}
+		a{color:#007bc4/*#424242*/; text-decoration:none;}
+		a:hover{text-decoration:underline}
+		ol,ul{list-style:none}
+		table{border-collapse:collapse;border-spacing:0}
+		body{height:100%; font:12px; sans-serif; color:#51555C; background:#2C2C2C }
+		#main_demo{width:910px; min-height:600px; margin:30px auto 0 auto; background:#fff; -moz-border-radius:12px;-khtml-border-radius: 12px;-webkit-border-radius: 12px; border-radius:12px;}
+		#results{
+			font: 12px Arial, Helvetica, sans-serif;
+			width: 400px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		#results .loading-indication{
+			background:#FFFFFF;
+			padding:10px;
+			position: absolute;
+		}
+		.paginate {
+			padding: 0px;
+			margin: 0px;
+			height: 30px;
+			display: block;
+			text-align: center;
+		}
+		.paginate li {
+			display: inline-block;
+			list-style: none;
+			padding: 0px;
+			margin-right: 1px;
+			width: 30px;
+			text-align: center;
+			background: #4CC2AF;
+			line-height: 25px;
+		}
+		.msgList{
+			padding: 0px;
+		}
+		.msgList li{
+			background: #E4E4E4;
+			margin-bottom: 5px;
+			padding: 5px;
+			height: 15px;
+			font-size: 12px;
+			list-style: none;
+		}
+		.msgList .page_name {
+			font-size: 14px;
+			font-weight: bold;
+			margin-right: 5px;
+		}
+		.message_right {
+			float: right;
+			margin-left: 5px;
+		}
+		.message_left {
+			float: left;
+			margin-right: 5px;
+		}
+		#msgInput{margin:10px 0 10px;}
+	</style>
+    <script>
+    	window.onload=function(){
+    		var userName=prompt("请输入一个用户名：")||"匿名";
+    		var msgList=$("msgList");
+    		var msgInput=$("msgInput");
+    		var msgSend=$("msgSend");
+    		getChat(userName);
+    		//获取数据
+    		function getChat(userName) {
+    		var msgList = document.getElementById("msgList");
+    		ajax({
+    			method:"get",
+    			url:"http://10.7.163.64/data/chat/chat_get.php",
+    			isAsync:true,
+    			success:function(data){
+    				var result=JSON.parse(data);
+    				console.log(result); 
+    				if(result.status==0){
+    					var lists=result.infos;
+    					for(var i in lists){
+    						createTxt(lists[i].sender,lists[i].msg,userName);
+    					}
+    				}
+    			}
+    		})
+    		}
+    		//发送数据
+    		msgSend.onclick=function(){
+    			var msg=msgInput.value;
+    		ajax({
+    			method:"post",
+    			data:{sender:userName,msg:msg},//对象形式
+    			url:"http://10.7.163.64/data/chat/chat_post.php",
+    			isAsync:true,
+    			success:function(data){
+    				var result=JSON.parse(data);
+    				console.log(result);
+    				if(result.status==0){
+    						createTxt(userName,msg,userName);
+    						msgInput.value="";   					
+    				}
+    			}
+    		})
+    		}
+    		msgInput.onkeydown=function(evt){
+    			var e=evt||window.event;
+    			if(e.keyCode==13){
+    				msgSend.click();
+    			}
+    		}
+    		//定时检测数据（更新）
+    		setInterval(function(){
+    			getChat(userName);
+    		},2000)
+    	}
+    	//创建元素，添加内容
+    	function createTxt(sender,msg,userName){
+    		var oUl=document.getElementById("msgList");
+    		var oLi=document.createElement("li");
+    		var oSpan1=document.createElement("span");
+    		var oSpan2=document.createElement("span");
+    		oSpan1.innerHTML="["+sender+"]";
+    		oSpan2.innerHTML=msg;
+    		var userClass="massage_left";
+    		if(sender==userName){
+    			userClass="massage_right";
+    		}
+    		oSpan1.className=userClass;
+    		oSpan2.className=userClass;
+    		oLi.appendChild(oSpan1);
+    		oLi.appendChild(oSpan2);
+    		oUl.appendChild(oLi);
+    		oLi.scrollIntoView();
+    	}
+    	
+    	function $(id){
+    		return document.getElementById(id);
+    	}
+    </script>
+
+	</head>
+	<body>
+		<div id="main_demo">
+			<div id="results">
+				<ul class="msgList" id="msgList" style="height:380px; overflow-y:scroll; vertical-align:text-bottom;text-align:bottom">
+					<!-- <li>
+						<span class="message_right">【yintao】</span>
+						<span class="message_right">哈哈哈哈</span>
+					</li>
+					<li>
+						<span class="message_left">【xiaoming】</span>
+						<span class="message_left">aaaaaaaaaaaaaaaaa</span>
+					</li>
+					<li>
+						<span class="message_left">【xiaoming】</span>
+						<span class="message_left">bbbbbbbbbb</span>
+					</li>
+					<li >
+						<span class="message_left">【xiaoming】</span>
+						<span class="message_left">ccccccccccccc</span>
+					</li> -->
+				</ul>
+				<div align="center">
+					<textarea id="msgInput" style="width:390px;"></textarea>
+					<button class="load_more" id="msgSend" style="display: inline-block;">发送</button>
+				</div>
+			</div>
+		</div>
+
+		
+	</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<!--<script type="text/javascript" src="js/ajax.js" ></script>-->
+		<script>
+//		window.onload=function(){
+//			ajax("data/a.txt?t="+new Date().getTime(),function(str){
+//				alert(str);
+//			})
+//		}
+		//创建AJAX对象：
+//		    var xhr=null;
+//		    if(window.XMLHttpRequest){
+//		    	var xhr=new XMLHttpRequest();
+//		    }else{
+//		    	var xhr=new ActiveXObject("Microsoft.XMLHTTP");
+//		    }
+//		//连接到服务器：    
+//		   xhr.open("get", "data/json1.json?t="+new Date().getTime(), true);
+//		//发送请求：    
+//		    xhr.send();
+//		//接收返回值：    
+//		    xhr.onreadystatechange=function(){
+//		    	if(xhr.readyState==4){
+//		    		if(xhr.status==200){
+//		    			//var obj = eval("("+xhr.responseText+")");
+//						//console.log(obj.status);
+//						var obj=JSON.parse(xhr.responseText);
+//						console.log(obj);
+//		    			alert(xhr.responseText);
+//		    		}else{
+//		    			alert(xhr.status);
+//		    		}
+//		    	}
+//		    }
+		    //非ie6:
+			//var xhr=new XMLHttpRequest();
+			//ie6:
+			//var xhr=new ActiveXObject("Microsoft.XMLHTTP");//早期网银等插件
+           
+           window.onload = function() {
+				var form = $("form");
+				form.onsubmit = function() {
+					var userName = $("userName").value;
+					var pwd=$("pwd").value;
+					var xhr = null;
+					if(window.XMLHttpRequest) {
+						xhr = new XMLHttpRequest();
+					} else {
+						xhr = new ActiveXObject("Mircrosoft.XMLHTTP");
+					}
+
+					xhr.open("get", "http://10.7.163.64/data/user_get.php?username="+encodeURIComponent(userName), true);
+					xhr.send();
+					xhr.onreadystatechange = function() {
+						if(xhr.readyState==4) {
+							if(xhr.status==200) {								
+								var obj=JSON.parse(xhr.responseText);
+								if(obj.status==1){
+									var xhr1=null;
+									if(window.XMLHttpRequest){
+										xhr1=new XMLHttpRequest();
+									}else{
+										xhr1=new ActiveXObject("Microsoft.XMLHTTP");
+									}
+									xhr1.open("post","http://10.7.163.64/data/user_post.php",true);
+									xhr1.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+									xhr1.send("username="+encodeURIComponent(userName)+"&password="+encodeURIComponent(pwd));
+									xhr1.onreadystatechange = function() {
+										if(xhr1.readyState==4) {
+											if(xhr1.status==200) {
+												console.log(xhr1.responseText);
+												alert("注册成功");
+											} else {
+												console.log(xhr1.status);
+												alert("注册失败");
+											}
+										}
+									}
+								} else {
+									alert("用户已存在，请直接登录");
+								}
+								}
+							} else {
+								console.log(xhr.status);
+							}
+						}
+					}
+					return false;
+				}
+			
+			function $(id) {
+				return document.getElementById(id);
+			}
+		</script>
+	</head>
+	<body>
+		<input type="button" value="提交" />	
+		<form id="form">
+			<input type="text" placeholder="用户名" id="userName">
+			<input type="text" placeholder="密码" id="pwd">
+			<input type="submit" value="注册" id="regist">
+		</form>
+
+	</body>
+</html>
+
